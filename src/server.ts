@@ -1,14 +1,14 @@
 import express from "express";
 import { sequelize } from "./database";
 import { adminJs, adminJsRouter } from "./adminjs";
+import { router } from "./routes";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static("public"));
-
 app.use(adminJs.options.rootPath, adminJsRouter);
-
-const PORT = process.env.PORT || 3000;
+app.use(router);
 
 app.listen(PORT, () => {
   sequelize.authenticate().then(() => {
