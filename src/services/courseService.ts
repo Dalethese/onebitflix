@@ -6,7 +6,7 @@ export const courseService = {
     const courseWithEpisodes = await Course.findByPk(id, {
       attributes: ["id", "name", "synopsis", ["thumbnail_url", "thumbnailUrl"]],
       include: {
-        association: "Episodes",
+        association: "episodes",
         attributes: [
           "id",
           "name",
