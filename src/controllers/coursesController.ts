@@ -25,6 +25,21 @@ export const coursesController = {
       }
     }
   },
+  /** GET /courses/search?name= */
+  search: async (req: Request, res: Response) => {
+    const { name } = req.query;
+    try {
+      if (typeof name !== "string")
+        throw new Error("name param must be type string");
+
+      const courses = await courseService.findByName(name);
+      return res.json(courses);
+    } catch (err) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+    }
+  },
   /** GET /courses/:id */
   show: async (req: Request, res: Response) => {
     const { id } = req.params;
