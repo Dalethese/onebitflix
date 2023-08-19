@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Course } from "../models";
 
 export const courseService = {
@@ -39,6 +40,18 @@ export const courseService = {
     const courses = await Course.findAll({
       limit: 10,
       order: [["created_at", "DESC"]],
+    });
+
+    return courses;
+  },
+  findByName: async (name: string) => {
+    const courses = await Course.findAll({
+      attributes: ["id", "name", "synopsis", ["thumbnail_url", "thumbnailUrl"]],
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
     });
 
     return courses;

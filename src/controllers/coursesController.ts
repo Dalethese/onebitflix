@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { courseService } from "../services/courseService";
 import { error } from "console";
+import { getPaginationParams } from "../helpers/getPaginationParams";
 
 export const coursesController = {
   /** GET /courses/featured */
@@ -19,6 +20,23 @@ export const coursesController = {
     try {
       const newestCourses = await courseService.getTopTenNewest();
       return res.json(newestCourses);
+    } catch (err) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+    }
+  },
+  /** GET /courses/search?page=num&perPage=num&name=string */
+  search: async (req: Request, res: Response) => {
+    const { name } = req.query;
+    const [page, perPage] = getPaginationParams(req.query);
+
+    try {
+      if (typeof name !== "string")
+        throw new Error("name param must be type string");
+
+      const courses = await courseService.findByName(name, page, perPage);
+      return res.json(courses);
     } catch (err) {
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });
