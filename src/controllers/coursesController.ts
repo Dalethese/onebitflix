@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { courseService } from "../services/courseService";
-import { error } from "console";
 import { getPaginationParams } from "../helpers/getPaginationParams";
 import { AuthenticatedRequest } from "../middlewares/auth";
 import { likeService } from "../services/likeService";
@@ -13,8 +12,8 @@ export const coursesController = {
       const featuredCourses = await courseService.getRandomFeaturedCourses();
       return res.json(featuredCourses);
     } catch (err) {
-      if (error instanceof Error) {
-        return res.status(400).json({ message: error.message });
+      if (err instanceof Error) {
+        return res.status(400).json({ message: err.message });
       }
     }
   },
@@ -24,8 +23,8 @@ export const coursesController = {
       const newestCourses = await courseService.getTopTenNewest();
       return res.json(newestCourses);
     } catch (err) {
-      if (error instanceof Error) {
-        return res.status(400).json({ message: error.message });
+      if (err instanceof Error) {
+        return res.status(400).json({ message: err.message });
       }
     }
   },
@@ -51,8 +50,8 @@ export const coursesController = {
       const courses = await courseService.findByName(name, page, perPage);
       return res.json(courses);
     } catch (err) {
-      if (error instanceof Error) {
-        return res.status(400).json({ message: error.message });
+      if (err instanceof Error) {
+        return res.status(400).json({ message: err.message });
       }
     }
   },
@@ -68,13 +67,14 @@ export const coursesController = {
         return res.status(404).json({ message: "Curso não encontrado" });
       }
 
-      const liked = await likeService.isLiked(userId, +courseId);
-      const favorited = await favoriteService.isFavorited(userId, +courseId);
+      const liked = await likeService.isLiked(userId, Number(courseId));
+      const favorited = await favoriteService.isFavorited(userId, Number(courseId));
       return res.json({ ...course.get(), liked, favorited });
     } catch (err) {
-      if (error instanceof Error) {
-        return res.status(400).json({ message: error.message });
+      if (err instanceof Error) {
+        return res.status(400).json({ message: err.message });
       }
     }
   },
+  //generate a method to get all courses
 };
