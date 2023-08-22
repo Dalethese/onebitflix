@@ -1,5 +1,5 @@
 {
-  "name": "onebitflix",
+  "name": "backend-onebitflix",
   "version": "1.0.0",
   "main": "server.js",
   "license": "MIT",
