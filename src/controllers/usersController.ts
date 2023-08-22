@@ -3,6 +3,19 @@ import { AuthenticatedRequest } from "../middlewares/auth";
 import { userService } from "../services/userService";
 
 export const usersController = {
+  /** GET /users/current */
+  show: async (req: AuthenticatedRequest, res: Response) => {
+    const currentUser = req.user!;
+
+    try {
+      return res.json(currentUser);
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(500).json({ message: err.message });
+      }
+    }
+  },
+
   /** GET /users/current/watching */
   watching: async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.user!;
@@ -17,12 +30,21 @@ export const usersController = {
     }
   },
 
-  /** GET /users/current */
-  show: async (req: AuthenticatedRequest, res: Response) => {
-    const currentUser = req.user!;
+  /** PUT /users/current  */
+  update: async (req: AuthenticatedRequest, res: Response) => {
+    const { id } = req.user!;
+    const { firstName, lastName, email, phone, birth } = req.body;
 
     try {
-      return res.json(currentUser);
+      const updatedUser = await userService.update(id, {
+        firstName,
+        lastName,
+        email,
+        phone,
+        birth,
+      });
+
+      return res.json(updatedUser);
     } catch (err) {
       if (err instanceof Error) {
         return res.status(500).json({ message: err.message });
