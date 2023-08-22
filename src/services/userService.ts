@@ -100,4 +100,17 @@ export const userService = {
 
     return updatedUser;
   },
+
+  updatePassword: async (id: number, password: string) => {
+    const [affectedRows, [updatedUser]] = await User.update(
+      { password },
+      {
+        where: { id },
+        returning: true,
+        individualHooks: true, // para executar o hook de criptografia que está no model
+      }
+    );
+
+    return updatedUser;
+  },
 };
