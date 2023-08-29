@@ -22,7 +22,7 @@ export const authController = {
         role: "user",
       });
 
-      return res.json(user);
+      return res.status(201).json(user);
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });
