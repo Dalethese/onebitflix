@@ -4,14 +4,7 @@ import { FeatureType, ResourceOptions } from "adminjs";
 
 export const episodeResourceOptions: ResourceOptions = {
   navigation: "Catálogo",
-  editProperties: [
-    "name",
-    "synopsis",
-    "courseId",
-    "order",
-    "uploadVideo",
-    "secondsLong",
-  ],
+  editProperties: ["name", "synopsis", "courseId", "order", "uploadVideo", "secondsLong"],
   filterProperties: [
     "name",
     "synopsis",
@@ -39,6 +32,7 @@ export const episodeResourceFeatures: FeatureType[] = [
     provider: {
       local: {
         bucket: path.join(__dirname, "../../../uploads"),
+        opts: {},
       },
     },
     properties: {
